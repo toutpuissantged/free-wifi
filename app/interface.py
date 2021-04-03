@@ -1,0 +1,48 @@
+
+from modules import InfoGet
+import os,time
+
+class Interface():
+
+    def __init__(self):
+        self.info=InfoGet()
+        os.system('cls' if os.name=='nt' else 'clear')
+        self.state={
+            'statut':'connected',
+            'reload':0,
+            'wifi-name':'Sobri mimi',
+            'username':'gedeon',
+            'app-name':'HACKTOOLS,'
+
+        }
+
+    def setState(self,name,val):
+        self.state[name]=val
+
+    def reload(self):
+        self.state['reload']=1
+    
+    def run(self):
+        while True:
+
+            os.system('cls' if os.name=='nt' else 'clear')
+            #print(self.info.run(),end="\r")
+            data=self.info.run()
+            heures=''
+            minutes=''
+            seconde=''
+            if(data['heures']>0):
+                heures=' {} h'.format(data['heures'])
+
+            if(data['minutes']>0):
+                minutes=' {} m'.format(data['minutes'])
+
+            if(data['seconde']>0):
+                seconde=' {} s'.format(data['seconde'])
+
+            print(" > {} : {} \t  reload : {} \t --- {} --- \t user > {} \t active time >{} {} {} ".format(self.state['wifi-name'],self.state['statut'],self.state['reload'],self.state['app-name'],self.state['username'],heures,minutes,seconde),end="\r")
+            time.sleep(1)
+
+if __name__ == '__main__':
+    from test import test
+    test(Interface())
