@@ -4,27 +4,21 @@ import os,time
 
 class Interface():
 
-    def __init__(self):
+    def __init__(self,state):
         self.info=InfoGet()
         os.system('cls' if os.name=='nt' else 'clear')
-        self.state={
-            'statut':'connected',
-            'reload':0,
-            'wifi-name':'Sobri mimi',
-            'username':'gedeon',
-            'app-name':'HACKTOOLS,'
-
-        }
+        self.state=state
 
     def setState(self,name,val):
         self.state[name]=val
 
-    def reload(self):
-        self.state['reload']=1
+    def reload(self,state):
+        self.state['reload']+=1
+        self.state=state
+        self.state['statut']='not connected'
     
     def run(self):
-        while True:
-
+        if True:
             os.system('cls' if os.name=='nt' else 'clear')
             #print(self.info.run(),end="\r")
             data=self.info.run()

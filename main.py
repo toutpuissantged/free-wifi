@@ -18,11 +18,19 @@ class HackTools(object):
 				'refresh':1,
 			},
 		}
+		self.state={
+            'statut':'connected',
+            'reload':0,
+            'wifi-name':'Sobri mimi',
+            'username':'gedeon',
+            'app-name':'HACKTOOLS,'
+
+        }
 		self.wifi_used=self.config['ssid']
 		self.link=""
 		self.infoget=InfoGet()
-		self.interface=Interface()
-		self.interface.run()
+		self.interface=Interface(self.state)
+		self.version = version()
 
 
 
@@ -40,10 +48,8 @@ class HackTools(object):
 		return temp3
 
 	def header(self):
-    	
 		print('hack tools')
-		version=version()
-		print("version {}  by anonymous13 \n".format(version))
+		print("version {}  by anonymous13 \n".format(self.version))
 		#auth()
 		print("demarage du moteur ...")
 
@@ -87,6 +93,7 @@ class HackTools(object):
 		link=soup.find_all("a")[0].get('href')
 		#link=soup.find('a').get('href')
 		wb.open(self.link)
+		self.state['statut']= 'connecting ...'
 		
 		#print('link is ',self.link)
 
@@ -117,21 +124,22 @@ class HackTools(object):
 		wifi_used_id=0
 
 		while loop:
-			#wifi_used=config['ssid_list'][wifi_used_id]
-			
 			curtime=time.time()
 			if curtime >=Itime+refresh:
 				loop=False
+				self.state['statut']= 'reloading'
 			else:
 				time.sleep(1)
 				try:
 					rq.get(config['url'])
+					self.state['statut']= 'connected'
 					if curtime >=Itime+10:
 						try:
 							rq.get(config['test'])
 						except:
 							#loop=False
 							notconected+=1
+							self.state['statut']= 'no internet  connexion'
 							#print('no internet  connexion')
 							
 							wb.open(link)
@@ -140,6 +148,7 @@ class HackTools(object):
 
 				except:
 					tour+=1
+					self.state['statut']= 'disconnected'
 
 			if notconected>=max_notconected:
 				notconected=0
@@ -170,12 +179,19 @@ class HackTools(object):
 		os.system('cls' if os.name=='nt' else 'clear')
 		self.header()
 		while True:
-			self.interface.reload()
-			if (self.config['user']!='dev'):
-				self.macChanger()
-				self.scraping()
-				self.toast()
-			self.ConnexionCheck()
+			self.interface.reload(self.state)
+			self.interface.run()
+			try:
+				if (self.config['user']!='dev'):
+					self.macChanger()
+					self.scraping()
+					self.toast()
+				try :
+					self.ConnexionCheck()
+				except:
+					pass
+			except:
+				pass
 
 hack = HackTools()
 
