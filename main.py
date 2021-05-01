@@ -1,8 +1,22 @@
 from modules import * 
 
 class HackTools(object):
-    	
+    '''
+	HackTools est un script qui exploite une faille particulier 'le free minute trial' sur 
+	les reseaux wifi public et permet d'automatiser des taches comme la verification de 
+	connexion reseaux , la verification de la connection a internet , le changement automatique 
+	et a interval de temps regulier de l'adresse mac 
+
+	'''
 	def __init__(self):
+		'''
+			la configuration du script ce fait ici , entre desolee pour les non programmeur 
+			l'objet config permet de configurer le ssid , l'url de la page de connexion , 
+			le site de test pour verifier la connexion internet , refresh pour specifier le 
+			temps de rechargement de l'adresse mac , dev-data est un objets custom pour le 
+			developement 
+
+		'''
 		self.config={
 			'user':'dev',
 			'ssid':'SOBRI MMM5',
@@ -38,38 +52,33 @@ class HackTools(object):
 	def arg_pars(self):
 		pass
 
-	def configLoad(self):
-		temp1=open('core/version.json','r')
-		temp2=temp1.read()
-		temp1.close()
-
-		temp3=json.loads(temp2)
-
-		return temp3
-
 	def header(self):
+		'''
+			permet de presenter l'application en exposent la version utiliser ,
+			le nom , le developeur etc ...
+
+		'''
 		print('hack tools')
 		print("version {}  by anonymous13 \n".format(self.version))
 		#auth()
 		print("demarage du moteur ...")
 
 	def Connect(self,ssid):
-    		
+    	'''
+			permet de connecter le peripherique au reseau via un appel systeme 
+			developer pour windows , les utilisateurs linux 
+
+		'''
 		call=os.system('netsh wlan connect name="{}"'.format(ssid))
 		#print('not connected to wifi ||| call :{}'.format(call))
 		return call
-
-	def toast(self):
-		'''  
-			permet de faire des notif a chaque reload de la boucle pricipale 
-		'''
-		print('reloaded ...')
-		#sys.exit()	
 
 	def scraping(self):
 		'''
 			soccupe de recuperer le liens de free trial et 
 			l'ouvre dans un nouvel onglet du navigateur par defaut
+
+
 		'''
 		isvalide=False
 		loop=0
@@ -100,6 +109,12 @@ class HackTools(object):
 	def macChanger(self):
 		'''
 			change aleatoirement l'adresse mac 
+			attention pour ceux qui on telechager les script 
+			sur internet , il faut installer tmac et le mettre dans 
+			les variables d'environement = le PATH ou soit de mettre l'excecutable tmac 
+			danc un dossiers nommer TMAC et de faire l'appelle systeme vers cet dossiers 
+			ex : os.systeme('/TMAC/tmac.exe -n Wi-Fi -nr02 -re -s')
+
 		'''
 		os.system('tmac -n Wi-Fi -nr02 -re -s')
 		
@@ -174,7 +189,8 @@ class HackTools(object):
 
 	def start(self):
 		'''
-			boucle principale 
+			boucle principale qui est le chef d'aurchestre du script 
+
 		'''
 		os.system('cls' if os.name=='nt' else 'clear')
 		self.header()
@@ -185,7 +201,6 @@ class HackTools(object):
 				if (self.config['user']!='dev'):
 					self.macChanger()
 					self.scraping()
-					self.toast()
 				try :
 					self.ConnexionCheck()
 				except:
@@ -198,4 +213,12 @@ hack = HackTools()
 hack.start()
 
 
-### hack tools by anonymous13 ###
+#######################################################
+##
+##  version 1.4   
+##
+##  developer par  toutpuissantged 
+##
+##  github  : https://www.github.com/toutpuissantged
+##
+#######################################################
