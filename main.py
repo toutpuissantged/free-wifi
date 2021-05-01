@@ -42,8 +42,8 @@ class HackTools(object):
 	def header(self):
     	
 		print('hack tools')
-		conf=self.configLoad()
-		print("version {}  by anonymous13 \n".format(conf['version']))
+		version=version()
+		print("version {}  by anonymous13 \n".format(version))
 		#auth()
 		print("demarage du moteur ...")
 
@@ -169,7 +169,6 @@ class HackTools(object):
 		'''
 		os.system('cls' if os.name=='nt' else 'clear')
 		self.header()
-		
 		while True:
 			self.interface.reload()
 			if (self.config['user']!='dev'):
